@@ -7,28 +7,35 @@ use App\Models\Post;
 
 class PostRepository implements PostRepositoryInterface 
 {
+    protected $model;
+
+    public function __construct(Post $model)
+    {
+        $this->model = $model;
+    }
     public function getAllPosts() 
     {
-        return Post::all();
+        $posts = $this->model->all();
+        return $posts;
     }
 
     public function getPostById($postId) 
     {
-        return Post::findOrFail($postId);
+        return $this->model->findOrFail($postId);
     }
 
     public function deletePost($postId) 
     {
-        Post::destroy($postId);
+        $this->model->destroy($postId);
     }
 
     public function createPost(array $postDetails) 
     {
-        return Post::create($postDetails);
+        return $this->model->create($postDetails);
     }
 
     public function updatePost($postId, array $newDetails) 
     {
-        return Post::whereId($postId)->update($newDetails);
+        return $this->model->whereId($postId)->update($newDetails);
     }
 }

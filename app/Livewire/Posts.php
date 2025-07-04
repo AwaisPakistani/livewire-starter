@@ -3,35 +3,40 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Repositories\Interfaces\PostRepositoryInterface;
 use App\Models\Post;
+use Illuminate\Http\Request;
+use App\Repositories\Interfaces\PostRepositoryInterface;
+
 class Posts extends Component
 {
-    public $posts = [], $title, $content, $post_id;
+    public $posts, $title, $content, $post_id;
     public $isOpen = false;
     
-    private $postRepository;
+    protected $postRepository;
 
-     public function mount(PostRepositoryInterface $postRepository)
+    public function mount(PostRepositoryInterface $postRepository)
     {
         $this->postRepository = $postRepository;
     }
 
     public function render()
     {
-        // dd(Post::all());
+        if (!$this->postRepository) {
+            $postRepository = app(PostRepositoryInterface::class);
+            $this->postRepository = $postRepository;
+        }
         $this->posts = $this->postRepository->getAllPosts();
-        \Log::debug('Posts data:', $this->posts->toArray());
-        // dd($this->posts);
+
         return view('livewire.posts');
     }
 
     public function create()
     {
         $this->resetInputFields();
+        // dd('kksldf');
         $this->openModal();
     }
-
+   
     public function openModal()
     {
         $this->isOpen = true;
@@ -49,8 +54,11 @@ class Posts extends Component
         $this->post_id = '';
     }
 
-    public function store()
+    public function store(Request $request)
     {
+        $postRepository = app(PostRepositoryInterface::class);
+
+        // dd('store');
         $this->validate([
             'title' => 'required',
             'content' => 'required',
@@ -62,10 +70,12 @@ class Posts extends Component
         ];
 
         if($this->post_id) {
-            $this->postRepository->updatePost($this->post_id, $data);
+            $postRepository->updatePost($this->post_id, $data);
+            // Post::whereId($this->post_id)->update($data);
             session()->flash('message', 'Post Updated Successfully.');
         } else {
-            $this->postRepository->createPost($data);
+            // Post::create($data);
+            $postRepository->createPost($data);
             session()->flash('message', 'Post Created Successfully.');
         }
 
@@ -75,17 +85,24 @@ class Posts extends Component
 
     public function edit($id)
     {
-        $post = $this->postRepository->getPostById($id);
+        $postRepository = app(PostRepositoryInterface::class);
+        // dd('edit');
+        $post = $postRepository->getPostById($id);
+        // $post = Post::whereId($id)->first();
         $this->post_id = $id;
         $this->title = $post->title;
         $this->content = $post->content;
         
+        // $this->resetInputFields();
         $this->openModal();
     }
 
     public function delete($id)
-    {
-        $this->postRepository->deletePost($id);
+    {   
+        $postRepository = app(PostRepositoryInterface::class);
+        // dd($postRepository);
+        $postRepository->deletePost($id);
+        // Post::destroy($id);
         session()->flash('message', 'Post Deleted Successfully.');
     }
 }

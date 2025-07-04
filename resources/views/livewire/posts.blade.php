@@ -38,7 +38,7 @@
         </div>
 
         <!-- Modal -->
-        @if($isOpen)
+        @if($isOpen==true)
         <div class="modal" style="display: block" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">

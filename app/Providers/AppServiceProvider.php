@@ -3,8 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Repositories\Interfaces\PostRepositoryInterface;
+
 use App\Repositories\Files\PostRepository;
+use App\Repositories\Interfaces\PostRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
