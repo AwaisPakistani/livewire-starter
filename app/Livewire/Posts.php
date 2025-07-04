@@ -54,7 +54,7 @@ class Posts extends Component
         $this->post_id = '';
     }
 
-    public function store(Request $request)
+    public function store()
     {
         $postRepository = app(PostRepositoryInterface::class);
 
