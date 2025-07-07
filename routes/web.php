@@ -24,7 +24,6 @@ Fortify::verifyEmailView(function () {
     return view('livewire.auth.verify-email');
 });
 
-
 Fortify::confirmPasswordView(function () {
     return view('livewire.auth.confirm-password');
 });
@@ -36,11 +35,11 @@ Fortify::twoFactorChallengeView(function () {
 //////////////////////////
 // Route::middleware(['auth', 'verified'])->group(function () {
     
-//     Route::get('/posts', Posts::class);
+//     Route::get('/posts', Posts::class)->name('posts');
 // });
-Route::get('/posts', Posts::class);
+Route::get('/', Posts::class)->name('posts');
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
