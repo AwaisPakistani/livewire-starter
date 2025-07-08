@@ -4,7 +4,7 @@ namespace App\Repositories\Interfaces;
 
 interface PostRepositoryInterface 
 {
-    public function getAllPosts();
+    public function getAllPosts($perPage);
     public function getPostById($postId);
     public function deletePost($postId);
     public function createPost(array $postDetails);

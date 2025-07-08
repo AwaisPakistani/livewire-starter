@@ -5,11 +5,13 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Livewire\WithPagination;
 use App\Repositories\Interfaces\PostRepositoryInterface;
 
 class Posts extends Component
 {
-    public $posts, $title, $content, $post_id;
+    use WithPagination;
+    // public $title, $content, $post_id;
     public $isOpen = false;
     
     protected $postRepository;
@@ -22,12 +24,15 @@ class Posts extends Component
     public function render()
     {
         if (!$this->postRepository) {
-            $postRepository = app(PostRepositoryInterface::class);
-            $this->postRepository = $postRepository;
+            $this->postRepository = app(PostRepositoryInterface::class);
         }
-        $this->posts = $this->postRepository->getAllPosts();
 
-        return view('livewire.posts');
+        // ✅ Don't assign to $this->posts
+        $posts = $this->postRepository->getAllPosts(2);
+
+        return view('livewire.posts', [
+            'posts' => $posts,
+        ]);
     }
 
     public function create()

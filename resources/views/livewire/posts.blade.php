@@ -46,6 +46,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {{-- @dump($posts['data']) --}}
                             @foreach($posts as $post)
                                     <tr>
                                         <td>{{ $post->title }}</td>
@@ -55,10 +56,10 @@
                                             <button wire:click="delete({{ $post->id }})" class="btn btn-danger">Delete</button>
                                         </td>
                                     </tr>
-                            @endforeach
+                            @endforeach      
                         </tbody>        
                     </table>
-                        
+                    {{ $posts->links() }}
                   
 
                     <!-- Modal -->

@@ -13,9 +13,9 @@ class PostRepository implements PostRepositoryInterface
     {
         $this->model = $model;
     }
-    public function getAllPosts() 
+    public function getAllPosts($perPage = 10) 
     {
-        $posts = $this->model->all();
+        $posts = $this->model::paginate($perPage);
         return $posts;
     }
 
