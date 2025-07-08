@@ -21,6 +21,8 @@
 
 <body>
     <div id="app">
+        @include('components.layouts.toast_message')
+
         <div id="sidebar" class="active">
             <div class="sidebar-wrapper active">
                 <div class="sidebar-header">
@@ -138,31 +140,22 @@
                             </ul>
                         </li>
 
-                        <li class="sidebar-title">Forms &amp; Tables</li>
+                        <li class="sidebar-title">Settings</li>
 
                         <li class="sidebar-item  has-sub">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-hexagon-fill"></i>
-                                <span>Form Elements</span>
+                                <span>Roles &amp; Permissions</span>
                             </a>
                             <ul class="submenu ">
                                 <li class="submenu-item ">
-                                    <a href="form-element-input.html">Input</a>
+                                    <a href="form-element-input.html">Roles</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="form-element-input-group.html">Input Group</a>
+                                    <a href="form-element-input-group.html">Permissions</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="form-element-select.html">Select</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="form-element-radio.html">Radio</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="form-element-checkbox.html">Checkbox</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="form-element-textarea.html">Textarea</a>
+                                    <a href="form-element-select.html">Users</a>
                                 </li>
                             </ul>
                         </li>
