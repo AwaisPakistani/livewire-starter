@@ -59,9 +59,7 @@
                             @endforeach      
                         </tbody>        
                     </table>
-                    {{ $posts->links() }}
-                  
-
+                    
                     <!-- Modal -->
                     @if($isOpen==true)
                     <div class="modal" style="display: block" tabindex="-1" role="dialog">
@@ -95,6 +93,13 @@
                         </div>
                     </div>
                     @endif
+                </div>
+                <div class="row">
+                    <div class="col-md-7"> 
+                    </div>
+                    <div class="col-md-5">
+                        {{ $posts->links() }}
+                    </div>
                 </div>
             </div>
         </section>
