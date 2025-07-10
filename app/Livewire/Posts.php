@@ -38,7 +38,7 @@ class Posts extends Component
     public function create()
     {
         $this->resetInputFields();
-        // dd('kksldf');
+        // dd('kksldf');ljkll
         $this->openModal();
     }
    
