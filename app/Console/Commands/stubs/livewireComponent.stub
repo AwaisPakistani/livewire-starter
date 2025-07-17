@@ -27,7 +27,7 @@ class {{ModelName}}s extends Component
         }
 
         // ✅ Don't assign to $this->posts
-        ${{ModelName}}s = $this->{{ModelName}}Repository->getAll{{ModelName}}s(2);
+        ${{ModelName}}s = $this->{{ModelName}}Repository->all(2);
 
         return view('livewire.{{ModelName}}s', [
             '{{ModelName}}s' => ${{ModelName}}s,

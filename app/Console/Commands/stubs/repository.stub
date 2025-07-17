@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Files;
 
 use App\Models\{{ModelName}};
 use App\Repositories\Interfaces\{{ModelName}}RepositoryInterface;
