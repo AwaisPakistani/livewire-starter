@@ -249,9 +249,23 @@ class GenerateRepositoryFiles extends Command
             return;
         }
 
-        // 1. Add the use statement at the top if not already present
+        // 1. Handle the use statement - check for grouped imports first
         $useStatement = "use {$componentClass};";
-        if (!Str::contains($existingContent, $useStatement)) {
+        $groupedUsePattern = '/use App\\\\Livewire\\\\\{(.*?)\};/s';
+
+        if (preg_match($groupedUsePattern, $existingContent, $matches)) {
+            // Add to existing grouped imports
+            $existingImports = $matches[1];
+            if (!Str::contains($existingImports, $componentName)) {
+                $newImports = trim($existingImports) . ",\n    {$componentName}";
+                $existingContent = str_replace(
+                    $matches[0],
+                    "use App\Livewire\{\n    {$newImports}\n};",
+                    $existingContent
+                );
+            }
+        } elseif (!Str::contains($existingContent, $useStatement)) {
+            // Add as separate use statement
             $existingContent = preg_replace(
                 '/^<\?php\s+/',
                 "<?php\n\n{$useStatement}\n",
@@ -269,7 +283,7 @@ class GenerateRepositoryFiles extends Command
             );
         } else {
             // Create new auth group if none exists (fallback)
-            $routeSection = "\n\n// {$modelName} Routes\nRoute::middleware(['auth'])->group(function () {Route::get('{$routeName}', {$componentName}::class)->name('{$routeName}');\n});";
+            $routeSection = "\n\n// {$modelName} Routes\nRoute::middleware(['auth'])->group(function () {\n    Route::get('{$routeName}', {$componentName}::class)->name('{$routeName}');\n});";
             $existingContent .= $routeSection;
         }
 

@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticatedSessionController;
 use App\Livewire\{
-    Posts,
+    Posts
 };
 use Laravel\Fortify\Fortify;
 // Fortify authentication
@@ -72,6 +72,7 @@ Route::get('/', function () {
 });
 Route::middleware(['auth'])->group(function () {
     Route::get('/posts', Posts::class)->name('posts');
+
 });
 // Route::get('/', Posts::class)->name('posts');
 
