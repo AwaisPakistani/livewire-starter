@@ -12,7 +12,7 @@ class GenerateRepositoryFiles extends Command
      *
      * @var string
      */
-    protected $signature = 'app:generate-repository-files {name : The name of the model}';
+    protected $signature = 'make:repository-files {name : The name of the model}';
 
     /**
      * The console command description.
@@ -42,6 +42,15 @@ class GenerateRepositoryFiles extends Command
 
         // Generate Livewire Blade File
         $this->livewireBlade($modelName);
+
+        // Generate Model File
+        $this->model($modelName);
+
+        // Generate Migration File
+        $this->generateMigration($modelName);
+
+        // Generate Seeder File
+        $this->generateSeeder($modelName);
 
         $this->info("Repository Pattern files for $modelName generated successfully!");
     }
@@ -113,5 +122,53 @@ class GenerateRepositoryFiles extends Command
         $stub = str_replace('{{ModelName}}', $modelName, $stub);
 
         File::put($livewireBladePath, $stub);
+    }
+
+    // Model
+    public function model($modelName){
+        $modelPath = app_path("Models/{$modelName}.php");
+
+        if (!File::exists(dirname($modelPath))) {
+            File::makeDirectory(dirname($modelPath), 0755, true);
+        }
+
+        $stub = File::get(__DIR__ . '/stubs/model.stub');
+        $stub = str_replace('{{ModelName}}', $modelName, $stub);
+
+        File::put($modelPath, $stub);
+    }
+
+    // make migrateion
+    public function generateMigration($modelName)
+    {
+        // Convert model name to proper table name (lowercase, plural)
+        $tableName = Str::plural(Str::snake($modelName));
+
+        $migrationName = "create_{$tableName}_table";
+        $migrationPath = database_path("migrations/".date('Y_m_d_His')."_".$migrationName.".php");
+
+        // Get stub content
+        $stub = File::get(__DIR__.'/stubs/migration.stub');
+
+        // Replace placeholders
+        $stub = str_replace('{{tableName}}', $tableName, $stub);
+        $stub = str_replace('{{ModelName}}', $modelName, $stub); // Keep model name for model reference if needed
+
+        File::put($migrationPath, $stub);
+
+        return $migrationPath;
+    }
+    public function generateSeeder($modelName)
+    {
+        $seederName = "{$modelName}Seeder";
+        $seederPath = database_path("seeders/{$seederName}.php");
+
+        $stub = File::get(__DIR__.'/stubs/seeder.stub');
+        $stub = str_replace('{{ModelName}}', $modelName, $stub);
+        $stub = str_replace('{{modelName}}', strtolower($modelName), $stub);
+
+        File::put($seederPath, $stub);
+
+        return $seederPath;
     }
 }
