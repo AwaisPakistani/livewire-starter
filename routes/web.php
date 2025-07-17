@@ -67,10 +67,10 @@ Fortify::twoFactorChallengeView(function () {
 //     Route::get('/posts', Posts::class)->name('posts');
 // });
 
+Route::get('/', function () {
+    return view('welcome');
+});
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', function () {
-        return view('welcome');
-    });
     Route::get('/posts', Posts::class)->name('posts');
 });
 // Route::get('/', Posts::class)->name('posts');

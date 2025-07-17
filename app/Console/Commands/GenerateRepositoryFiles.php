@@ -12,7 +12,18 @@ class GenerateRepositoryFiles extends Command
      *
      * @var string
      */
-    protected $signature = 'make:repository-files {name : The name of the model}';
+    // protected $signature = 'make:repository-files {name : The name of the model}';
+
+     protected $signature = 'make:files
+                            {name : The name of the model}
+                            {--repository : Generate Repository Files}
+                            {--request : Generate a Request}
+                            {--migration : Generate a migration}
+                            {--model : Generate a Model}
+                            {--seeder : Generate a seeder}
+                            {--view : Generate a view}
+                            {--route : Generate a Route}
+                            {--all : Generate all files}';
 
     /**
      * The console command description.
@@ -28,31 +39,77 @@ class GenerateRepositoryFiles extends Command
     {
         $modelName = $this->argument('name');
 
-        // Generate Interface
-        $this->generateInterface($modelName);
+        if ($this->option('all')) {
+                    // Generate Interface
+                $this->generateInterface($modelName);
 
-        // Generate Repository
-        $this->generateRepository($modelName);
+                // Generate Repository
+                $this->generateRepository($modelName);
 
-        // Generate Livewire Component
-        $this->generateLivewireComponent($modelName);
+                // Generate Livewire Component
+                $this->generateLivewireComponent($modelName);
 
-        // Generate Request
-        $this->generateRequest($modelName);
+                // Generate Request
+                $this->generateRequest($modelName);
 
-        // Generate Livewire Blade File
-        $this->livewireBlade($modelName);
+                // Generate Livewire Blade File
+                $this->livewireBlade($modelName);
 
-        // Generate Model File
-        $this->model($modelName);
+                // Generate Model File
+                $this->model($modelName);
 
-        // Generate Migration File
-        $this->generateMigration($modelName);
+                // Generate Migration File
+                $this->generateMigration($modelName);
 
-        // Generate Seeder File
-        $this->generateSeeder($modelName);
+                // Generate Seeder File
+                $this->generateSeeder($modelName);
+                // Routes
+                $this->generateRoutes($modelName);
+        }
+        if ($this->option('repository')) {
+            // Generate Interface
+            $this->generateInterface($modelName);
 
-        $this->info("Repository Pattern files for $modelName generated successfully!");
+            // Generate Repository
+            $this->generateRepository($modelName);
+
+            // Generate Livewire Component
+            $this->generateLivewireComponent($modelName);
+
+            // Generate Livewire Blade File
+            $this->livewireBlade($modelName);
+        }
+
+        if ($this->option('request')) {
+            // Generate Request
+            $this->generateRequest($modelName);
+        }
+
+        if ($this->option('model')) {
+            // Generate Model File
+            $this->model($modelName);
+        }
+
+        if ($this->option('migration')) {
+            // Generate Migration File
+            $this->generateMigration($modelName);
+        }
+
+        if ($this->option('seeder')) {
+             // Generate Seeder File
+            $this->generateSeeder($modelName);
+        }
+        if ($this->option('view')) {
+             // Generate Livewire Blade File
+            $this->livewireBlade($modelName);
+        }
+        if ($this->option('route')) {
+            $this->generateRoutes($modelName);
+        }
+
+
+
+        $this->info("Files for $modelName generated successfully!");
     }
 
     protected function generateInterface($modelName)
@@ -170,5 +227,53 @@ class GenerateRepositoryFiles extends Command
         File::put($seederPath, $stub);
 
         return $seederPath;
+    }
+
+    protected function generateRoutes($modelName)
+    {
+        $routeName = Str::plural(Str::kebab($modelName));
+        $componentName = "{$modelName}s";
+        $componentClass = "App\Livewire\\{$componentName}";
+
+        // Check if component exists, create it if not
+        if (!File::exists(app_path("Livewire/{$componentName}.php"))) {
+            $this->generateLivewireComponent($modelName);
+        }
+
+        $routesFile = base_path('routes/web.php');
+        $existingContent = File::get($routesFile);
+
+        // Check if routes already exist
+        if (Str::contains($existingContent, "Route::get('{$routeName}', {$componentName}::class)")) {
+            $this->warn("Routes for {$modelName} already exist");
+            return;
+        }
+
+        // 1. Add the use statement at the top if not already present
+        $useStatement = "use {$componentClass};";
+        if (!Str::contains($existingContent, $useStatement)) {
+            $existingContent = preg_replace(
+                '/^<\?php\s+/',
+                "<?php\n\n{$useStatement}\n",
+                $existingContent
+            );
+        }
+
+        // 2. Find the existing auth middleware group and append the new route
+        if (Str::contains($existingContent, "Route::middleware(['auth'])->group(function () {")) {
+            // Insert inside existing auth group
+            $existingContent = preg_replace(
+                '/(Route::middleware\(\[\'auth\'\]\)->group\(function \(\) \{\n)(.*?)(\n\s*\}\);)/s',
+                "$1$2    Route::get('{$routeName}', {$componentName}::class)->name('{$routeName}');\n$3",
+                $existingContent
+            );
+        } else {
+            // Create new auth group if none exists (fallback)
+            $routeSection = "\n\n// {$modelName} Routes\nRoute::middleware(['auth'])->group(function () {Route::get('{$routeName}', {$componentName}::class)->name('{$routeName}');\n});";
+            $existingContent .= $routeSection;
+        }
+
+        File::put($routesFile, $existingContent);
+        $this->info("Route for {$modelName} added to auth middleware group");
     }
 }
