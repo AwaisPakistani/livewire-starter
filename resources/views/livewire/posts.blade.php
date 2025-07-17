@@ -28,13 +28,13 @@
                 <div class="card-header">
                     <div class="row">
                          <div class="col-md-10">
-                             <h2>Posts</h2> 
+                             <h2>Posts</h2>
                          </div>
                           <div class="col-md-2">
                               <button wire:click="create()" class="btn btn-primary">Create New Post</button>
                          </div>
                     </div>
-                   
+
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered">
@@ -56,10 +56,10 @@
                                             <button wire:click="delete({{ $post->id }})" class="btn btn-danger">Delete</button>
                                         </td>
                                     </tr>
-                            @endforeach      
-                        </tbody>        
+                            @endforeach
+                        </tbody>
                     </table>
-                    
+
                     <!-- Modal -->
                     @if($isOpen==true)
                     <div class="modal" style="display: block" tabindex="-1" role="dialog">
@@ -95,7 +95,7 @@
                     @endif
                 </div>
                 <div class="row">
-                    <div class="col-md-7"> 
+                    <div class="col-md-7">
                     </div>
                     <div class="col-md-5">
                         {{ $posts->links() }}
@@ -103,6 +103,6 @@
                 </div>
             </div>
         </section>
-      
+
     </div>
 </div>

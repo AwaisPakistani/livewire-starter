@@ -2,9 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticatedSessionController;
-use App\Livewire\Posts;
+use App\Livewire\{
+    Posts,
+};
 use Laravel\Fortify\Fortify;
 // Fortify authentication
+
+
 Fortify::loginView(function () {
     return view('livewire.auth.login');
     // Route::get('login',[AuthenticatedSessionController::class, 'create'])->name('login');

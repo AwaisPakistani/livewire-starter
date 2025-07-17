@@ -19,12 +19,11 @@
         <div class="row h-100">
             <div class="col-lg-5 col-12">
                 <div id="auth-left">
-                    <div class="mb-4">
-                        {{-- <a href="{{ route('home') }}"><img src="{{ asset('assets/images/logo/logo.png') }}" class="img-fluid" alt="Logo"></a> --}}
-                      {{-- <a href="#"><img src="{{ asset('assets/images/logo/logo.png') }}" class="img-fluid" alt="Logo"></a> --}}
-                    </div>
+                    {{-- <div class="mb-4">
+                        <a href="#"><img src="{{ asset('assets/images/logo/logo.png') }}" class="img-fluid" alt="Logo"></a>
+                    </div> --}}
                     <h1 class="auth-title">Log in.</h1>
-                    <p class="auth-subtitle">Log in with your data that you entered during registration.</p>
+                    {{-- <p class="auth-subtitle">Log in with your data that you entered during registration.</p> --}}
                     <form  method="POST" action="{{ route('login.store') }}">@csrf
                         <div class="form-group position-relative has-icon-left mb-4">
                             <input type="text" class="form-control form-control-xl" name="email" placeholder="Username">
@@ -56,7 +55,7 @@
             </div>
             <div class="col-lg-7 d-none d-lg-block">
                 <div id="auth-right">
-
+                   <img src="{{ asset('assets/images/faces/7.jpg')}}" style="width: 100%;" />
                 </div>
             </div>
         </div>

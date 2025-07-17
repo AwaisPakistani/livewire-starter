@@ -14,16 +14,14 @@
     <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
     <link rel="stylesheet" href="assets/css/app.css">
     <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon">
-    
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
      @livewireStyles
 </head>
 <body>
     <div id="app">
         @include('components.layouts.toast_message')
-
         @include('components.layouts.sidebar')
-
         <div id="main" class='layout-navbar'>
            @include('components.layouts.header')
             <div id="main-content">
@@ -35,8 +33,8 @@
                @include('components.layouts.footer')
             </div>
         </div>
+        @livewireScripts
     </div>
-    @livewireScripts
     <script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
 
