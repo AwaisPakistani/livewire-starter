@@ -1,0 +1,3 @@
+<div>
+    {{modelName}}
+</div>
